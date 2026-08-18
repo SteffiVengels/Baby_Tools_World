@@ -13,7 +13,7 @@ def product_list(request, category_slug=None):
     )
     if category_slug:
         products = products.filter(category__slug=category_slug)
-    return render(request, "products.html", {"categories": categories, "products": products})
+    return render(request, "products.html", {"categories": categories, "products": products, "active_slug": category_slug})
 
 
 def product_detail(request, category_slug, pk):
