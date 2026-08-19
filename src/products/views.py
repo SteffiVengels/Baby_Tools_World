@@ -1,12 +1,23 @@
 from django.contrib import messages
 from django.db.models import Avg, Count
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentForm
 from .models import Category, Comment, Product
 
 
-def product_list(request, category_slug=None):
+def product_list(request: HttpRequest, category_slug: str | None = None) -> HttpResponse:
+    """
+    Render the product overview, optionally filtered by category.
+
+    Args:
+        request: The incoming HTTP request.
+        category_slug: Slug of the category to filter by, or None for all products.
+
+    Returns:
+        The rendered product list page.
+    """
     categories = Category.objects.all()
     products = Product.objects.select_related("category").annotate(
         avg_rating=Avg("comments__rating"), total_ratings=Count("comments")
@@ -18,7 +29,18 @@ def product_list(request, category_slug=None):
     )
 
 
-def product_detail(request, category_slug, pk):
+def product_detail(request: HttpRequest, category_slug: str, pk: int) -> HttpResponse:
+    """
+    Show a single product with its reviews and handle review submissions.
+
+    Args:
+        request: The incoming HTTP request.
+        category_slug: Slug of the product's category.
+        pk: Primary key of the product.
+
+    Returns:
+        The rendered product detail page, or a redirect after a successful review.
+    """
     product = get_object_or_404(
         Product.objects.select_related("category").annotate(
             avg_rating=Avg("comments__rating"), total_ratings=Count("comments")
