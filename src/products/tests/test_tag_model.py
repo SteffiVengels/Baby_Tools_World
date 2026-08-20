@@ -60,4 +60,3 @@ class TagTestCase(TestCase):
         # Test the string representation of a tag
         tag = Tag.objects.create(name=self.test_tag_name)
         self.assertEqual(str(tag), self.test_tag_name)
-        
