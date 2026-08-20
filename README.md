@@ -6,6 +6,21 @@ The project was developed for educational purposes only and therefore has no cla
 > [!NOTE]
 > This project assumes you already know the python programming language
 
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Quickstart](#quickstart)
+- [Project Structure](#project-structure)
+  - [Apps Overview](#apps-overview)
+- [Usage](#usage)
+  - [Configuration](#configuration)
+  - [Product Tags](#product-tags)
+  - [Running the linting tools](#running-the-linting-tools)
+  - [Testing](#testing)
+  - [Running with a WSGI Server](#running-with-a-wsgi-server)
+  - [Seeding the application with data](#seeding-the-application-with-data)
+  - [Containerization](#containerization)
+
 ## Prerequisites
 
 In order to seamlessly interact with the repository and the software it contains you need to following tools preinstalled:
