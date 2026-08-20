@@ -12,6 +12,7 @@ The project was developed for educational purposes only and therefore has no cla
 - [Quickstart](#quickstart)
 - [Project Structure](#project-structure)
   - [Apps Overview](#apps-overview)
+- [Features](#features)
 - [Usage](#usage)
   - [Configuration](#configuration)
   - [Product Tags](#product-tags)
@@ -65,6 +66,15 @@ The project is modularized into several apps:
 - `users`: Handles user authentication and registration.
 
 Each app has its own `models.py`, `views.py`, `urls.py`, and `admin.py` files to encapsulate its functionality.
+
+## Features
+
+The following features are available in the application:
+
+- **Product catalog with categories**: Products are grouped into categories (for example boys, girls, toys, outdoor). Visitors can browse all products or filter them by clicking a category in the sidebar.
+- **Product ratings and reviews**: Logged-in users and guests can rate a product from 1 to 5 stars and leave an optional comment. The average rating is shown on the product and overview pages. After submitting, the review form is cleared.
+- **Product tags**: Products can be labelled with one or more optional tags (for example "sale" or "wooden"), managed via the Django admin panel. Tags are shown on the product detail page below the rating summary; if a product has no tags, an italic "no tags available" label is displayed instead.
+- **Admin panel**: Superusers can create and manage products, categories, and tags through the Django admin interface, including filtering products by tag.
 
 ## Usage
 
