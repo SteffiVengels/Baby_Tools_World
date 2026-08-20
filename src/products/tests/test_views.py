@@ -39,8 +39,9 @@ class ProductViewAndCommentFormTests(TestCase):
         self.assertIn("form", resp.context)
         self.assertIn("comments", resp.context)
 
-    def test_authenticated_user_form_prefilled_with_existing_comment(self):
-        # existing comment
+    def test_authenticated_user_form_is_empty_even_with_existing_comment(self):
+        # An existing comment must NOT pre-fill the form; fields stay empty
+        # so they are cleared after submitting a review.
         Comment.objects.create(product=self.product, user=self.user, rating=3, text="Existing")
         self.client.login(username="tester", password="pass1234")
         url = reverse("product_detail", args=[self.category.slug, self.product.pk])
@@ -48,8 +49,8 @@ class ProductViewAndCommentFormTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         form = resp.context["form"]
         # initial data should reflect existing comment
-        self.assertEqual(form.initial.get("rating"), 3)
-        self.assertEqual(form.initial.get("text"), "Existing")
+        self.assertIsNone(form.initial.get("rating"))
+        self.assertIsNone(form.initial.get("text"))
 
     # -------- Authenticated user comment flow (create/upsert) --------
     def test_authenticated_user_create_comment(self):
