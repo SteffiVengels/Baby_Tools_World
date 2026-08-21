@@ -1,13 +1,13 @@
 {% extends '_dashboard.html' %}
 {% block content %}
-<div class="row ml-2 mt-3">
+<div class="row ml-2 mt-3" style="margin-right: 0;">
   <div class="col-2">
     <div class="list-group">
-      <a href="/" class="list-group-item list-group-item-action active" aria-current="true">
+      <a href="/" class="list-group-item list-group-item-action {% if not active_slug %}active{% endif %}" aria-current="true">
         Categories
       </a>
       {% for category in categories %}
-      <a href="{% url 'products_by_category' category.slug %}" class="list-group-item list-group-item-action">
+      <a href="{% url 'products_by_category' category.slug %}" class="list-group-item list-group-item-action {% if active_slug == category.slug %}active{% endif %}">
         {{category.name}}
       </a>
       {% endfor %}

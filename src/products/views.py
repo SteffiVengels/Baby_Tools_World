@@ -1,22 +1,46 @@
 from django.contrib import messages
 from django.db.models import Avg, Count
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentForm
 from .models import Category, Comment, Product
 
 
-def product_list(request, category_slug=None):
+def product_list(request: HttpRequest, category_slug: str | None = None) -> HttpResponse:
+    """
+    Render the product overview, optionally filtered by category.
+
+    Args:
+        request: The incoming HTTP request.
+        category_slug: Slug of the category to filter by, or None for all products.
+
+    Returns:
+        The rendered product list page.
+    """
     categories = Category.objects.all()
     products = Product.objects.select_related("category").annotate(
         avg_rating=Avg("comments__rating"), total_ratings=Count("comments")
     )
     if category_slug:
         products = products.filter(category__slug=category_slug)
-    return render(request, "products.html", {"categories": categories, "products": products})
+    return render(
+        request, "products.html", {"categories": categories, "products": products, "active_slug": category_slug}
+    )
 
 
-def product_detail(request, category_slug, pk):
+def product_detail(request: HttpRequest, category_slug: str, pk: int) -> HttpResponse:
+    """
+    Show a single product with its reviews and handle review submissions.
+
+    Args:
+        request: The incoming HTTP request.
+        category_slug: Slug of the product's category.
+        pk: Primary key of the product.
+
+    Returns:
+        The rendered product detail page, or a redirect after a successful review.
+    """
     product = get_object_or_404(
         Product.objects.select_related("category").annotate(
             avg_rating=Avg("comments__rating"), total_ratings=Count("comments")
@@ -59,13 +83,8 @@ def product_detail(request, category_slug, pk):
 
             return redirect("product_detail", category_slug=category_slug, pk=product.pk)
     else:
-        # Pre-fill form for authenticated user with existing comment (if any)
-        initial = {}
-        if request.user.is_authenticated:
-            existing = product.comments.filter(user=request.user).first()
-            if existing:
-                initial = {"rating": existing.rating, "text": existing.text}
-        form = CommentForm(initial=initial)
+        # Always start with an empty form so fields are cleared after submitting
+        form = CommentForm()
 
     return render(
         request,

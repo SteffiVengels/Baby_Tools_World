@@ -6,6 +6,22 @@ The project was developed for educational purposes only and therefore has no cla
 > [!NOTE]
 > This project assumes you already know the python programming language
 
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Quickstart](#quickstart)
+- [Project Structure](#project-structure)
+  - [Apps Overview](#apps-overview)
+- [Features](#features)
+- [Usage](#usage)
+  - [Configuration](#configuration)
+  - [Product Tags](#product-tags)
+  - [Running the linting tools](#running-the-linting-tools)
+  - [Testing](#testing)
+  - [Running with a WSGI Server](#running-with-a-wsgi-server)
+  - [Seeding the application with data](#seeding-the-application-with-data)
+  - [Containerization](#containerization)
+
 ## Prerequisites
 
 In order to seamlessly interact with the repository and the software it contains you need to following tools preinstalled:
@@ -46,10 +62,19 @@ In order to quickly get started with the project follow these steps:
 
 The project is modularized into several apps:
 
-- `products`: Manages product listings and categories
+- `products`: Manages product listings, categories, and tags
 - `users`: Handles user authentication and registration.
 
 Each app has its own `models.py`, `views.py`, `urls.py`, and `admin.py` files to encapsulate its functionality.
+
+## Features
+
+The following features are available in the application:
+
+- **Product catalog with categories**: Products are grouped into categories (for example boys, girls, toys, outdoor). Visitors can browse all products or filter them by clicking a category in the sidebar.
+- **Product ratings and reviews**: Logged-in users and guests can rate a product from 1 to 5 stars and leave an optional comment. The average rating is shown on the product and overview pages. After submitting, the review form is cleared.
+- **Product tags**: Products can be labelled with one or more optional tags (for example "sale" or "wooden"), managed via the Django admin panel. Tags are shown on the product detail page below the rating summary; if a product has no tags, an italic "no tags available" label is displayed instead.
+- **Admin panel**: Superusers can create and manage products, categories, and tags through the Django admin interface, including filtering products by tag.
 
 ## Usage
 
@@ -65,6 +90,20 @@ To configure the project, follow these steps:
 2. Open your `src/.env` and set the required environment variables:
     - `ALLOWED_HOSTS`: provide a list of comma-separated values for the allowed host configuration => Defaults to `'localhost, 127.0.0.1, 0.0.0.0'`
     - `DEBUG`: Set to `True` for development or `False` for production. Defaults to `True`
+
+### Product Tags
+
+Products can be labelled with one or more tags (for example "sale" or "wooden").
+Tags are optional, so a product does not need to have any.
+
+Tags are managed through the Django admin panel:
+
+1. Open the admin panel at `localhost:8000/admin` and log in as a superuser.
+2. Under **Tags**, create new tags or edit existing ones.
+3. Open a product under **Products** and assign tags to it via the tags field.
+
+On a product's detail page, its tags are displayed below the rating summary.
+If a product has no tags, a "no tags available" note is shown instead.
 
 ### Running the linting tools
 
